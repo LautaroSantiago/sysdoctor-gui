@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=sysdoctor-gui
+GenericName=Diagnóstico del sistema
+Comment=Analiza el sistema Linux Mint MATE y muestra errores y advertencias encontradas
+Exec=sysdoctor-gui
+Icon=sysdoctor-gui
+Terminal=false
+Categories=System;Settings;Monitor;
+StartupNotify=true
