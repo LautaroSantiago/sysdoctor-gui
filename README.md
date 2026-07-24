@@ -1,5 +1,12 @@
 # sysdoctor-gui
 
+<p align="center">
+
+[![Español](https://img.shields.io/badge/README-Espa%C3%B1ol-2ea44f?style=for-the-badge)](README.md)
+[![English](https://img.shields.io/badge/README-English-0969da?style=for-the-badge)](README.en.md)
+
+</p>
+
 Herramienta gráfica de diagnóstico de sistema para **Linux Mint MATE**.
 Corre ~230 chequeos de sólo lectura (hardware, kernel, servicios, disco,
 red, seguridad, escritorio, paquetes, rendimiento, energía, tareas
@@ -114,20 +121,47 @@ python3 main.py
    navegá por categoría en la barra lateral.
 4. **"Guardar reporte"** exporta todo a un `.md`.
 
-## Estructura del proyecto
+## 🌳 Estructura del proyecto
 
+```text
+sysdoctor-gui/
+├── analyzer.py        # Interpreta la salida de los comandos
+├── app.py             # Gtk.Application
+├── commands_db.py     # Catálogo de ~230 chequeos
+├── controller.py      # Conecta la interfaz con el motor de análisis
+├── install.sh         # Instalador para el usuario actual
+├── main.py            # Punto de entrada
+├── models.py          # Modelos de datos (CommandSpec, Finding, Status)
+├── priv_helper.py     # Proceso privilegiado ejecutado mediante pkexec
+├── scanner.py         # Orquesta el escaneo y detecta el contexto
+├── theme.py           # Colores y estilos GTK3
+├── window.py          # Interfaz gráfica
+├── LICENSE
+└── README.md
 ```
-models.py         estructuras de datos compartidas (CommandSpec, Finding, Status)
-commands_db.py    catálogo de ~230 chequeos, organizados en 19 categorías
-analyzer.py       interpreta la salida cruda de cada comando -> Finding
-scanner.py        detección de contexto, canal pkexec, orquestación del escaneo
-priv_helper.py    proceso mínimo que corre como root (lanzado vía pkexec)
-theme.py          paleta de colores y CSS de GTK3
-window.py         interfaz gráfica (GTK3)
-controller.py     conecta la ventana con el scanner en un hilo de fondo
-app.py            Gtk.Application
-main.py           punto de entrada
-install.sh        instalador idempotente para el usuario actual
+
+### Arquitectura
+
+```text
+          GUI (GTK3)
+               │
+               ▼
+        controller.py
+               │
+               ▼
+          scanner.py
+        ┌──────┴──────┐
+        ▼             ▼
+ commands_db.py   priv_helper.py
+        │
+        ▼
+    analyzer.py
+        │
+        ▼
+      Findings
+        │
+        ▼
+      window.py
 ```
 
 ## Extender el catálogo de chequeos
