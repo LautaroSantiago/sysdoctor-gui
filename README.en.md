@@ -1,102 +1,199 @@
 # sysdoctor-gui
 
-<p align="center">
+System diagnostic tool for Linux Mint MATE.
 
-<a href="README.md">
-    <img src="https://img.shields.io/badge/🇪🇸-Español-2ea44f?style=for-the-badge" alt="Spanish">
-</a>
-
-<a href="README.en.md">
-    <img src="https://img.shields.io/badge/🇬🇧-English-0969da?style=for-the-badge" alt="English">
-</a>
-
-</p>
-
-System diagnostic tool for **Linux Mint MATE**.
-
-> **Note:** This is the English version of the documentation.
-> For the Spanish version, click the **Español** button above.
+## Overview
+sysdoctor-gui is a GTK3 desktop application.
+It performs about 230 read-only diagnostic checks.
+It analyzes hardware, software, and system health.
+It summarizes problems with priorities.
+It suggests commands when appropriate.
 
 ## Features
-
-- ~230 read-only diagnostic checks.
-- GTK3 graphical interface.
-- Prioritized summary of warnings and errors.
-- Automatic hardware and system detection.
+- Read-only diagnostics.
+- Priority summary.
+- Context-aware detection.
 - Optional deep scans.
 - Markdown report export.
-- Native `pkexec` privilege elevation.
+- GTK3 interface.
+- Python 3.9+.
+
+## Safety
+No automatic repairs.
+No configuration changes.
+No package installation during scans.
+User stays in control.
+
+## Privileges
+Uses pkexec.
+Authentication requested once.
+Privileged helper process.
 
 ## Installation
-
-```bash
-git clone https://github.com/LautaroSantiago/sysdoctor-gui.git
-cd sysdoctor-gui
-./install.sh
-```
+git clone repository.
+Run install.sh.
 
 ## Usage
-
-```bash
-sysdoctor-gui
-```
-
-or
-
-```bash
-python3 main.py
-```
-
-## Project structure
-
-```text
-sysdoctor-gui/
-├── analyzer.py
-├── app.py
-├── commands_db.py
-├── controller.py
-├── install.sh
-├── main.py
-├── models.py
-├── priv_helper.py
-├── scanner.py
-├── theme.py
-├── window.py
-├── LICENSE
-└── README.md
-```
+Launch from menu.
+Or run sysdoctor-gui.
 
 ## Architecture
+GTK UI.
+Controller.
+Scanner.
+Analyzer.
+Results.
 
-```text
-          GUI (GTK3)
-               │
-               ▼
-        controller.py
-               │
-               ▼
-          scanner.py
-        ┌──────┴──────┐
-        ▼             ▼
- commands_db.py   priv_helper.py
-        │
-        ▼
-    analyzer.py
-        │
-        ▼
-      Findings
-        │
-        ▼
-      window.py
-```
+## Dependencies
+python3-gi.
+GTK3.
+policykit-1.
 
 ## License
-
-MIT License.
+MIT.
 
 ## Author
+Lautaro.
+GitHub: LautaroSantiago.
 
-**Lautaro** — University Programming Technician, UTN Facultad Regional Avellaneda.
 
-- GitHub: https://github.com/LautaroSantiago
-- LinkedIn: https://linkedin.com/in/lautaro-subeldia/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
