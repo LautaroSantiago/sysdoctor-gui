@@ -49,8 +49,6 @@ programadas — y te muestra sólo lo que realmente necesita tu atención.
 
 </div>
 
-> Guardá las imágenes en `docs/screenshots/` con esos nombres (o ajustá las
-> rutas de arriba) y esta sección se arma sola en GitHub.
 
 ## Motivación
 
