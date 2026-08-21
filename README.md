@@ -1,28 +1,26 @@
-# sysdoctor-gui
+<div align="center">
 
-<p align="center">
+# 🩺 sysdoctor-gui
 
-[![Español](https://img.shields.io/badge/README-Espa%C3%B1ol-2ea44f?style=for-the-badge)](README.md)
-[![English](https://img.shields.io/badge/README-English-0969da?style=for-the-badge)](README.en.md)
+**Diagnóstico completo de Linux Mint MATE, en una interfaz gráfica.**
 
-</p>
+Corre ~230 chequeos de sólo lectura sobre hardware, kernel, servicios, disco,
+red, seguridad, escritorio, paquetes, rendimiento, energía y tareas
+programadas — y te muestra sólo lo que realmente necesita tu atención.
 
-Herramienta gráfica de diagnóstico de sistema para **Linux Mint MATE**.
-Corre ~230 chequeos de sólo lectura (hardware, kernel, servicios, disco,
-red, seguridad, escritorio, paquetes, rendimiento, energía, tareas
-programadas, virtualización) y devuelve un resumen priorizado de errores
-y advertencias, con la línea de comando exacta usada y una sugerencia de
-solución cuando aplica.
-
-![Python](https://img.shields.io/badge/Python-3.9%2B-3ea86b?style=flat-square)
-![GTK](https://img.shields.io/badge/GTK-3-3ea86b?style=flat-square)
-![Platform](https://img.shields.io/badge/platform-Linux%20Mint%20MATE-3ea86b?style=flat-square)
+![Python](https://img.shields.io/badge/Python-3.9%2B-3ea86b?style=flat-square&logo=python&logoColor=white)
+![GTK](https://img.shields.io/badge/GTK-3-3ea86b?style=flat-square&logo=gtk&logoColor=white)
+![Platform](https://img.shields.io/badge/platform-Linux%20Mint%20MATE-3ea86b?style=flat-square&logo=linux&logoColor=white)
 ![License](https://img.shields.io/badge/license-MIT-3ea86b?style=flat-square)
+![Status](https://img.shields.io/badge/status-activo-3ea86b?style=flat-square)
+
+</div>
 
 ---
 
 ## Índice
 
+- [Capturas](#capturas)
 - [Motivación](#motivación)
 - [Características](#características)
 - [Principio de diseño: sólo lectura](#principio-de-diseño-sólo-lectura)
@@ -32,8 +30,27 @@ solución cuando aplica.
 - [Estructura del proyecto](#estructura-del-proyecto)
 - [Extender el catálogo de chequeos](#extender-el-catálogo-de-chequeos)
 - [Dependencias](#dependencias)
+- [Roadmap](#roadmap)
+- [Contribuir](#contribuir)
 - [Licencia](#licencia)
 - [Autor](#autor)
+
+## Capturas
+
+<div align="center">
+
+| Resumen de errores | Detalle de un chequeo |
+|:---:|:---:|
+| ![Resumen](docs/screenshots/resumen.png) | ![Detalle](docs/screenshots/detalle.png) |
+
+| Instalar herramientas | Reporte exportado |
+|:---:|:---:|
+| ![Instalador](docs/screenshots/instalar.png) | ![Reporte](docs/screenshots/reporte.png) |
+
+</div>
+
+> Guardá las imágenes en `docs/screenshots/` con esos nombres (o ajustá las
+> rutas de arriba) y esta sección se arma sola en GitHub.
 
 ## Motivación
 
@@ -41,29 +58,23 @@ Este proyecto nace de una guía personal de diagnóstico de Linux Mint MATE
 (~280 comandos organizados en 10 partes, de hardware a tareas programadas)
 pensada para correr a mano en la terminal. `sysdoctor-gui` la convierte en
 una herramienta gráfica: corre los chequeos relevantes, interpreta cada
-salida y separa lo que es sólo información de lo que es un problema real.
+salida con una heurística propia y separa lo que es sólo información de lo
+que es un problema real — sin tener que leer cientos de líneas de log vos
+mismo.
 
 ## Características
 
-- **~230 chequeos** organizados en 19 categorías navegables.
-- **Resumen priorizado**: una pestaña dedicada que junta sólo errores y
-  advertencias de todo el sistema, sin tener que revisar categoría por
-  categoría.
-- **Interpretación real de la salida**, no sólo texto crudo: estado SMART,
-  servicios systemd caídos (con follow-up automático a sus logs), uso de
-  disco/inodos por umbral, OOM killer, vulnerabilidades de CPU sin
-  mitigar, rootkits, integridad de paquetes, salud de batería, arrays
-  RAID degradados, y más de 50 heurísticas específicas.
-- **Detección automática de contexto**: disco principal, interfaz de red,
-  batería, NVMe — nada de rutas hardcodeadas tipo `/dev/sda` o `eth0`.
-- **Chequeos profundos opcionales** (rkhunter, lynis, clamav, aide,
-  debsums) detrás de un checkbox, para que el escaneo normal tarde
-  menos de un minuto.
-- **Instalación de herramientas recomendadas** como acción explícita y
-  separada, paquete por paquete (un nombre inválido no frena al resto).
-- **Reporte exportable** a Markdown.
-- Paleta de colores y arquitectura propias, consistentes con mis otros
-  proyectos de escritorio para Mint MATE.
+| | |
+|---|---|
+| 🗂️ **~230 chequeos** | Organizados en 19 categorías navegables, fieles a la guía original. |
+| 🚨 **Resumen priorizado** | Una pestaña dedicada junta sólo errores y advertencias de todo el sistema. |
+| 🧠 **Interpretación real** | Más de 50 heurísticas específicas: SMART, servicios caídos, uso de disco/inodos por umbral, OOM killer, CPU sin mitigar, rootkits, integridad de paquetes, salud de batería, RAID degradado, y más. |
+| 🔎 **Detección de contexto** | Disco principal, interfaz de red, batería, NVMe — nada de rutas hardcodeadas tipo `/dev/sda` o `eth0`. |
+| 🐢 **Chequeos profundos opcionales** | rkhunter, lynis, clamav, aide, debsums detrás de un checkbox; el escaneo normal tarda menos de un minuto. |
+| 📦 **Instalador de herramientas** | Acción explícita y separada, paquete por paquete — un nombre inválido no frena al resto. |
+| 📝 **Reporte exportable** | Todo el resultado a un `.md` con un clic. |
+| 🔗 **Follow-up automático** | Si un servicio systemd falló, trae solo su log reciente sin que lo pidas. |
+| 🎨 **Identidad propia** | Paleta y arquitectura consistentes con mis otros proyectos de escritorio para Mint MATE. |
 
 ## Principio de diseño: sólo lectura
 
@@ -121,47 +132,23 @@ python3 main.py
    navegá por categoría en la barra lateral.
 4. **"Guardar reporte"** exporta todo a un `.md`.
 
-## 🌳 Estructura del proyecto
+## Estructura del proyecto
 
-```text
-sysdoctor-gui/
-├── analyzer.py        # Interpreta la salida de los comandos
-├── app.py             # Gtk.Application
-├── commands_db.py     # Catálogo de ~230 chequeos
-├── controller.py      # Conecta la interfaz con el motor de análisis
-├── install.sh         # Instalador para el usuario actual
-├── main.py            # Punto de entrada
-├── models.py          # Modelos de datos (CommandSpec, Finding, Status)
-├── priv_helper.py     # Proceso privilegiado ejecutado mediante pkexec
-├── scanner.py         # Orquesta el escaneo y detecta el contexto
-├── theme.py           # Colores y estilos GTK3
-├── window.py          # Interfaz gráfica
-├── LICENSE
-└── README.md
 ```
-
-### Arquitectura
-
-```text
-          GUI (GTK3)
-               │
-               ▼
-        controller.py
-               │
-               ▼
-          scanner.py
-        ┌──────┴──────┐
-        ▼             ▼
- commands_db.py   priv_helper.py
-        │
-        ▼
-    analyzer.py
-        │
-        ▼
-      Findings
-        │
-        ▼
-      window.py
+sysdoctor-gui/
+├── models.py         # estructuras de datos compartidas (CommandSpec, Finding, Status)
+├── commands_db.py     # catálogo de ~230 chequeos, organizados en 19 categorías
+├── analyzer.py         # interpreta la salida cruda de cada comando -> Finding
+├── scanner.py          # detección de contexto, canal pkexec, orquestación del escaneo
+├── priv_helper.py     # proceso mínimo que corre como root (lanzado vía pkexec)
+├── theme.py             # paleta de colores y CSS de GTK3
+├── window.py           # interfaz gráfica (GTK3)
+├── controller.py       # conecta la ventana con el scanner en un hilo de fondo
+├── app.py               # Gtk.Application
+├── main.py              # punto de entrada
+├── install.sh            # instalador idempotente para el usuario actual
+├── sysdoctor-gui.desktop # lanzador de menú de MATE
+└── icon.svg               # ícono de la app
 ```
 
 ## Extender el catálogo de chequeos
@@ -192,14 +179,30 @@ archivo — mientras tanto sirven los genéricos `"raw_info"`,
 sudo apt install python3-gi gir1.2-gtk-3.0 python3-gi-cairo policykit-1
 ```
 
+## Roadmap
+
+- [ ] Empaquetado `.deb`
+- [ ] Historial de escaneos anteriores para comparar cambios en el tiempo
+- [ ] Traducción del catálogo a inglés
+- [ ] Modo "sólo esta categoría" para escaneos rápidos puntuales
+
+## Contribuir
+
+Los issues y pull requests son bienvenidos. Si agregás un chequeo nuevo al
+catálogo, contá qué comando reemplaza y por qué quedó afuera del escaneo
+por defecto (si aplica) — ayuda a mantener el criterio de "sólo lectura"
+consistente en todo el proyecto.
+
 ## Licencia
 
 MIT — ver [`LICENSE`](LICENSE).
+
+---
 
 ## Autor
 
 **Lautaro** — Tecnicatura Universitaria en Programación, UTN Facultad
 Regional Avellaneda.
 
-- GitHub: [@LautaroSantiago](https://github.com/LautaroSantiago)
-- LinkedIn: [lautaro-subeldia](https://linkedin.com/in/lautaro-subeldia/)
+[![GitHub](https://img.shields.io/badge/GitHub-LautaroSantiago-3ea86b?style=flat-square&logo=github&logoColor=white)](https://github.com/LautaroSantiago)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-lautaro--subeldia-3ea86b?style=flat-square&logo=linkedin&logoColor=white)](https://linkedin.com/in/lautaro-subeldia/)
