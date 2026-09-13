@@ -20,7 +20,6 @@ programadas — y te muestra sólo lo que realmente necesita tu atención.
 
 ## Índice
 
-- [Capturas](#capturas)
 - [Motivación](#motivación)
 - [Características](#características)
 - [Principio de diseño: sólo lectura](#principio-de-diseño-sólo-lectura)
@@ -34,23 +33,6 @@ programadas — y te muestra sólo lo que realmente necesita tu atención.
 - [Contribuir](#contribuir)
 - [Licencia](#licencia)
 - [Autor](#autor)
-
-## Capturas
-
-<div align="center">
-
-| Resumen de errores | Detalle de un chequeo |
-|:---:|:---:|
-| ![Resumen](docs/screenshots/resumen.png) | ![Detalle](docs/screenshots/detalle.png) |
-
-| Instalar herramientas | Reporte exportado |
-|:---:|:---:|
-| ![Instalador](docs/screenshots/instalar.png) | ![Reporte](docs/screenshots/reporte.png) |
-
-</div>
-
-> Guardá las imágenes en `docs/screenshots/` con esos nombres (o ajustá las
-> rutas de arriba) y esta sección se arma sola en GitHub.
 
 ## Motivación
 
