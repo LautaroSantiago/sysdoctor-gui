@@ -1,92 +1,86 @@
-# sysdoctor-gui
+<div align="center">
 
-<p align="center">
+# 🩺 sysdoctor-gui
 
-[![Español](https://img.shields.io/badge/README-Espa%C3%B1ol-2ea44f?style=for-the-badge)](README.md)
-[![English](https://img.shields.io/badge/README-English-0969da?style=for-the-badge)](README.en.md)
+**Complete Linux Mint MATE diagnostics, in a graphical interface.**
 
-</p>
+Runs ~230 read-only checks covering hardware, kernel, services, disk,
+network, security, desktop, packages, performance, power and scheduled
+tasks — and shows you only what actually needs your attention.
 
-Graphical system diagnostic tool for **Linux Mint MATE**.
-Corre ~230 chequeos de sólo lectura (hardware, kernel, servicios, disco,
-red, seguridad, escritorio, paquetes, rendimiento, energía, tareas
-programadas, virtualización) y devuelve un resumen priorizado de errores
-y advertencias, con la línea de comando exacta usada y una sugerencia de
-solución cuando aplica.
-
-![Python](https://img.shields.io/badge/Python-3.9%2B-3ea86b?style=flat-square)
-![GTK](https://img.shields.io/badge/GTK-3-3ea86b?style=flat-square)
-![Platform](https://img.shields.io/badge/platform-Linux%20Mint%20MATE-3ea86b?style=flat-square)
+![Python](https://img.shields.io/badge/Python-3.9%2B-3ea86b?style=flat-square&logo=python&logoColor=white)
+![GTK](https://img.shields.io/badge/GTK-3-3ea86b?style=flat-square&logo=gtk&logoColor=white)
+![Platform](https://img.shields.io/badge/platform-Linux%20Mint%20MATE-3ea86b?style=flat-square&logo=linux&logoColor=white)
 ![License](https://img.shields.io/badge/license-MIT-3ea86b?style=flat-square)
+![Status](https://img.shields.io/badge/status-active-3ea86b?style=flat-square)
+
+[Leer en español](README.md)
+
+</div>
 
 ---
 
-## Table of Contents
+## Table of contents
 
-- [Motivación](#motivación)
-- [Características](#características)
-- [Principio de diseño: sólo lectura](#principio-de-diseño-sólo-lectura)
-- [Privilegios (pkexec)](#privilegios-pkexec)
-- [Instalación](#instalación)
-- [Uso](#uso)
-- [Estructura del proyecto](#estructura-del-proyecto)
-- [Extender el catálogo de chequeos](#extender-el-catálogo-de-chequeos)
-- [Dependencias](#dependencias)
-- [Licencia](#licencia)
-- [Autor](#autor)
+- [Motivation](#motivation)
+- [Features](#features)
+- [Design principle: read-only](#design-principle-read-only)
+- [Privileges (pkexec)](#privileges-pkexec)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Project structure](#project-structure)
+- [Extending the checks catalog](#extending-the-checks-catalog)
+- [Dependencies](#dependencies)
+- [Roadmap](#roadmap)
+- [Contributing](#contributing)
+- [License](#license)
+- [Author](#author)
 
 ## Motivation
 
-Este proyecto nace de una guía personal de diagnóstico de Linux Mint MATE
-(~280 comandos organizados en 10 partes, de hardware a tareas programadas)
-pensada para correr a mano en la terminal. `sysdoctor-gui` la convierte en
-una herramienta gráfica: corre los chequeos relevantes, interpreta cada
-salida y separa lo que es sólo información de lo que es un problema real.
+This project started from a personal Linux Mint MATE diagnostics guide
+(~280 commands organized in 10 parts, from hardware to scheduled tasks)
+meant to be run by hand in a terminal. `sysdoctor-gui` turns it into a
+graphical tool: it runs the relevant checks, interprets each output with
+its own heuristics, and separates what's just information from what's an
+actual problem — without you having to read hundreds of lines of log
+output yourself.
 
 ## Features
 
-- **~230 chequeos** organizados en 19 categorías navegables.
-- **Resumen priorizado**: una pestaña dedicada que junta sólo errores y
-  advertencias de todo el sistema, sin tener que revisar categoría por
-  categoría.
-- **Interpretación real de la salida**, no sólo texto crudo: estado SMART,
-  servicios systemd caídos (con follow-up automático a sus logs), uso de
-  disco/inodos por umbral, OOM killer, vulnerabilidades de CPU sin
-  mitigar, rootkits, integridad de paquetes, salud de batería, arrays
-  RAID degradados, y más de 50 heurísticas específicas.
-- **Detección automática de contexto**: disco principal, interfaz de red,
-  batería, NVMe — nada de rutas hardcodeadas tipo `/dev/sda` o `eth0`.
-- **Chequeos profundos opcionales** (rkhunter, lynis, clamav, aide,
-  debsums) detrás de un checkbox, para que el escaneo normal tarde
-  menos de un minuto.
-- **Instalación de herramientas recomendadas** como acción explícita y
-  separada, paquete por paquete (un nombre inválido no frena al resto).
-- **Reporte exportable** a Markdown.
-- Paleta de colores y arquitectura propias, consistentes con mis otros
-  proyectos de escritorio para Mint MATE.
+| | |
+|---|---|
+| 🗂️ **~230 checks** | Organized into 19 browsable categories, faithful to the original guide. |
+| 🚨 **Prioritized summary** | A dedicated tab collects only errors and warnings across the whole system. |
+| 🧠 **Real interpretation** | 50+ specific heuristics: SMART health, down systemd services, disk/inode usage thresholds, OOM killer, unmitigated CPU vulnerabilities, rootkits, package integrity, battery health, degraded RAID, and more. |
+| 🔎 **Context detection** | Main disk, network interface, battery, NVMe — no hardcoded paths like `/dev/sda` or `eth0`. |
+| 🐢 **Optional deep checks** | rkhunter, lynis, clamav, aide, debsums behind a checkbox; the normal scan runs in under a minute. |
+| 📦 **Tool installer** | An explicit, separate action, package by package — one invalid name doesn't block the rest. |
+| 📝 **Exportable report** | Full results to a `.md` file with one click. |
+| 🔗 **Automatic follow-up** | If a systemd service failed, its recent log gets pulled in automatically. |
+| 🎨 **Own visual identity** | Palette and architecture consistent with my other Mint MATE desktop projects. |
 
-## Design Principle: Read-Only
+## Design principle: read-only
 
-El escaneo automático **nunca** instala paquetes, cambia configuración,
-crea snapshots ni corre benchmarks/estrés por su cuenta. Quedan afuera a
-propósito: recuperación de disco (testdisk/ddrescue), `apt --fix-broken
-install`, `ufw enable`, `update-grub`, fio/sysbench/stress-ng, herramientas
-interactivas (htop, glances), y cualquier comando que necesite un objetivo
-que no se pueda determinar sin adivinar (ej. un servidor remoto puntual).
+The automatic scan **never** installs packages, changes configuration,
+creates snapshots, or runs benchmarks/stress tests on its own. Deliberately
+left out: disk recovery (testdisk/ddrescue), `apt --fix-broken install`,
+`ufw enable`, `update-grub`, fio/sysbench/stress-ng, interactive tools
+(htop, glances), and any command that needs a target that can't be
+determined without guessing (e.g. a specific remote server).
 
-Cuando un chequeo encuentra un problema con una solución conocida, el
-reporte incluye el comando sugerido listo para copiar — la decisión de
-correrlo queda siempre del lado del usuario.
+When a check finds a problem with a known fix, the report includes the
+suggested command ready to copy — the decision to run it is always left
+to the user.
 
 ## Privileges (pkexec)
 
-Los chequeos que necesitan root piden acceso **una sola vez** por escaneo,
-vía el prompt gráfico nativo de polkit (`pkexec`), no `sudo` por terminal.
-A partir de ahí, todos los comandos privilegiados se ejecutan a través de
-un único proceso auxiliar (`priv_helper.py`) lanzado una vez — nunca se
-piden credenciales por cada comando individual. Si el prompt se cancela,
-esos chequeos puntuales quedan marcados como omitidos y el resto del
-análisis se completa igual.
+Checks that need root ask for access **only once** per scan, through
+polkit's native graphical prompt (`pkexec`), not `sudo` in a terminal.
+From there, every privileged command runs through a single helper process
+(`priv_helper.py`) launched once — credentials are never requested per
+individual command. If the prompt is cancelled, those specific checks are
+marked as skipped and the rest of the scan still completes.
 
 ## Installation
 
@@ -96,108 +90,104 @@ cd sysdoctor-gui
 ./install.sh
 ```
 
-The installer is idempotent: it copies the application to `~/.local/share/sysdoctor-gui`, installs a launcher in `~/.local/bin/sysdoctor-gui`, adds the hicolor icon, and creates a MATE menu entry. It checks for required dependencies and offers to install any that are missing.
+The installer is idempotent: it copies the app to
+`~/.local/share/sysdoctor-gui`, a launcher to `~/.local/bin/sysdoctor-gui`,
+the icon (hicolor), and the MATE menu entry. It checks dependencies and
+offers to install them if missing.
 
 ## Usage
 
-From the MATE menu or from a terminal:
+From the MATE menu, or from a terminal:
 
 ```bash
 sysdoctor-gui
 ```
 
-Without installing, directly from the repository:
+Without installing, directly from the repo:
 
 ```bash
 python3 main.py
 ```
 
-1. Tildá **"Chequeos profundos"** si querés incluir rkhunter/lynis/clamav/aide.
-2. Apretá **"Analizar sistema"**. Si algún chequeo necesita privilegios te
-   va a pedir la contraseña una sola vez.
-3. Revisá la pestaña **Resumen** para ver sólo lo que necesita atención, o
-   navegá por categoría en la barra lateral.
-4. **"Guardar reporte"** exporta todo a un `.md`.
+1. Check **"Deep checks"** if you want to include rkhunter/lynis/clamav/aide.
+2. Click **"Analyze system"**. If any check needs privileges, you'll be
+   asked for your password once.
+3. Check the **Summary** tab to see only what needs attention, or browse
+   by category in the sidebar.
+4. **"Save report"** exports everything to a `.md` file.
 
-## 🌳 Estructura del proyecto
+## Project structure
 
-```text
+```
 sysdoctor-gui/
-├── analyzer.py        # Interpreta la salida de los comandos
-├── app.py             # Gtk.Application
-├── commands_db.py     # Catálogo de ~230 chequeos
-├── controller.py      # Conecta la interfaz con el motor de análisis
-├── install.sh         # Instalador para el usuario actual
-├── main.py            # Punto de entrada
-├── models.py          # Modelos de datos (CommandSpec, Finding, Status)
-├── priv_helper.py     # Proceso privilegiado ejecutado mediante pkexec
-├── scanner.py         # Orquesta el escaneo y detecta el contexto
-├── theme.py           # Colores y estilos GTK3
-├── window.py          # Interfaz gráfica
-├── LICENSE
-└── README.md
+├── models.py         # shared data structures (CommandSpec, Finding, Status)
+├── commands_db.py     # catalog of ~230 checks, organized into 19 categories
+├── analyzer.py         # interprets each command's raw output -> Finding
+├── scanner.py          # context detection, pkexec channel, scan orchestration
+├── priv_helper.py     # minimal process that runs as root (launched via pkexec)
+├── theme.py             # GTK3 color palette and CSS
+├── window.py           # graphical interface (GTK3)
+├── controller.py       # connects the window to the scanner on a background thread
+├── app.py               # Gtk.Application
+├── main.py              # entry point
+├── install.sh            # idempotent installer for the current user
+├── sysdoctor-gui.desktop # MATE menu launcher
+└── icon.svg               # app icon
 ```
 
-### Arquitectura
+## Extending the checks catalog
 
-```text
-          GUI (GTK3)
-               │
-               ▼
-        controller.py
-               │
-               ▼
-          scanner.py
-        ┌──────┴──────┐
-        ▼             ▼
- commands_db.py   priv_helper.py
-        │
-        ▼
-    analyzer.py
-        │
-        ▼
-      Findings
-        │
-        ▼
-      window.py
-```
-
-## Extender el catálogo de chequeos
-
-Cada chequeo es una línea en `commands_db.py`:
+Each check is one line in `commands_db.py`:
 
 ```python
-A(C("id_unico", "categoria", "Descripción corta",
-    ["comando", "--flag", "{placeholder}"],
-    sudo=True, bin="comando", parser="nombre_del_parser",
-    deep=False, condition="has_algo", timeout=20))
+A(C("unique_id", "category", "Short description",
+    ["command", "--flag", "{placeholder}"],
+    sudo=True, bin="command", parser="parser_name",
+    deep=False, condition="has_something", timeout=20))
 ```
 
-Los placeholders (`{disk_path}`, `{iface}`, `{home}`, `{username}`,
-`{battery_path}`, `{nvme_dev}`, etc.) se resuelven en
-`scanner.build_context()`. Si el parser todavía no existe, se agrega en
-`analyzer.py` y se registra en el diccionario `PARSERS` al final del
-archivo — mientras tanto sirven los genéricos `"raw_info"`,
-`"keyword_scan"` o `"grep_display"`.
+Placeholders (`{disk_path}`, `{iface}`, `{home}`, `{username}`,
+`{battery_path}`, `{nvme_dev}`, etc.) are resolved in
+`scanner.build_context()`. If the parser doesn't exist yet, add it in
+`analyzer.py` and register it in the `PARSERS` dictionary at the end of
+the file — the generic `"raw_info"`, `"keyword_scan"` or `"grep_display"`
+work fine in the meantime.
 
 ## Dependencies
 
 - Python 3.9+
 - `python3-gi`, `gir1.2-gtk-3.0`, `python3-gi-cairo`
-- `policykit-1` (pkexec — estándar en Mint)
+- `policykit-1` (pkexec — standard on Mint)
 
 ```bash
 sudo apt install python3-gi gir1.2-gtk-3.0 python3-gi-cairo policykit-1
 ```
 
+## Roadmap
+
+- [ ] `.deb` packaging
+- [ ] Scan history to compare changes over time
+- [ ] English translation of the checks catalog
+- [ ] "This category only" mode for quick, targeted scans
+
+## Contributing
+
+Issues and pull requests are welcome. If you add a new check to the
+catalog, explain which command it replaces and why it was left out of the
+default scan (if applicable) — it helps keep the "read-only" principle
+consistent across the project.
+
 ## License
 
-MIT — ver [`LICENSE`](LICENSE).
+MIT — see [`LICENSE`](LICENSE).
+
+---
 
 ## Author
 
-**Lautaro** — Tecnicatura Universitaria en Programación, UTN Facultad
-Regional Avellaneda.
+**Lautaro** — Computer Programming Technical Degree (Tecnicatura
+Universitaria en Programación), UTN Facultad Regional Avellaneda,
+Argentina.
 
-- GitHub: [@LautaroSantiago](https://github.com/LautaroSantiago)
-- LinkedIn: [lautaro-subeldia](https://linkedin.com/in/lautaro-subeldia/)
+[![GitHub](https://img.shields.io/badge/GitHub-LautaroSantiago-3ea86b?style=flat-square&logo=github&logoColor=white)](https://github.com/LautaroSantiago)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-lautaro--subeldia-3ea86b?style=flat-square&logo=linkedin&logoColor=white)](https://linkedin.com/in/lautaro-subeldia/)

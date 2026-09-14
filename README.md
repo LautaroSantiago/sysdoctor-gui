@@ -14,6 +14,8 @@ programadas — y te muestra sólo lo que realmente necesita tu atención.
 ![License](https://img.shields.io/badge/license-MIT-3ea86b?style=flat-square)
 ![Status](https://img.shields.io/badge/status-activo-3ea86b?style=flat-square)
 
+[Read in English](README.en.md)
+
 </div>
 
 ---
